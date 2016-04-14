@@ -1,0 +1,269 @@
+-- This has been manually generated, need to reverse engineer to model right and maintain script from there
+
+---
+--- CREATE SEQUENCE: TECH_SEQ
+---
+CREATE SEQUENCE TECH_SEQ
+	CACHE 10
+	ORDER
+;
+
+---
+--- CREATE SEQUENCE: TA_SEQ
+---
+CREATE SEQUENCE TA_SEQ
+	CACHE 10
+	ORDER
+;
+
+---
+--- CREATE TABLE: TECHNICIAN
+---
+CREATE TABLE TECHNICIAN 
+( 
+	ID INTEGER, 
+	SHOP_ID VARCHAR2(255 CHAR) CONSTRAINT NN_TECH_SHOP_ID NOT NULL, 
+	NAME VARCHAR2(255 CHAR) 
+	CONSTRAINT NN_TECH_NAME NOT NULL 
+)
+;
+ 
+---
+--- CREATE INDEX: TECH_PK
+---
+CREATE UNIQUE INDEX TECH_PK ON TECHNICIAN
+(
+	ID
+)
+;
+
+---
+--- CREATE KEY CONSTRAINT: TECH_PK
+---
+ALTER TABLE TECHNICIAN ADD 
+	CONSTRAINT TECH_PK PRIMARY KEY (ID)
+;
+
+---
+--- CREATE TABLE: TECHNICIAN_ASSIGNMENT
+---
+CREATE TABLE TECHNICIAN_ASSIGNMENT 
+( 
+	ID INTEGER CONSTRAINT NN_TA_ID NOT NULL, 
+	ACTIVITY_ID INTEGER CONSTRAINT NN_TA_ACTIVITY_ID NOT NULL, 
+	TECHNICIAN_ID INTEGER CONSTRAINT NN_TA_TECHNICIAN_ID NOT NULL, 
+	WORK_DATE DATE CONSTRAINT NN_TA_WORK_DATE NOT NULL, 
+	ASSIGNED_HRS NUMBER(4,2) CONSTRAINT NN_TA_ASSIGNED_HRS NOT NULL, 
+	CREATED_BY VARCHAR2(35 CHAR) CONSTRAINT NN_TA_CREATED_BY NOT NULL, 
+	CREATED_DATE DATE DEFAULT SYSDATE CONSTRAINT NN_TA_CREATED_DATE NOT NULL, 
+	LAST_MODIFIED_BY VARCHAR2(35 CHAR), 
+	LAST_MODIFIED_DATE DATE 
+)
+;
+
+---
+--- CREATE INDEX: TA_ACT_ACTID_FK
+---
+CREATE INDEX TA_ACT_ACTID_FK ON TECHNICIAN_ASSIGNMENT
+(
+	ACTIVITY_ID
+)
+;
+
+---
+--- CREATE INDEX: TA_PK
+---
+CREATE UNIQUE INDEX TA_PK ON TECHNICIAN_ASSIGNMENT
+(
+	ID
+)
+;
+
+---
+--- CREATE INDEX: TA_TECH_TECHID_FK
+---
+CREATE INDEX TA_TECH_TECHID_FK ON TECHNICIAN_ASSIGNMENT
+(
+	TECHNICIAN_ID
+)
+;
+
+---
+--- CREATE KEY CONSTRAINT: TA_PK
+---
+ALTER TABLE TECHNICIAN_ASSIGNMENT ADD 
+	CONSTRAINT TA_PK PRIMARY KEY (ID)
+;
+
+---
+--- CREATE FOREIGN KEY CONSTRAINT: TA_ACT_ACTID_FK
+---
+ALTER TABLE TECHNICIAN_ASSIGNMENT ADD 
+	CONSTRAINT TA_ACT_ACTID_FK FOREIGN KEY (ACTIVITY_ID)
+		REFERENCES ACTIVITY (ID)
+;
+
+---
+--- CREATE TABLE: TECHNICIAN_AVAILABILITY
+---
+CREATE TABLE TECHNICIAN_AVAILABILITY 
+( 
+	TECHNICIAN_ID INTEGER CONSTRAINT NN_TAVAIL_TECHNICIAN_ID NOT NULL, 
+	WORK_DATE DATE CONSTRAINT NN_TAVAIL_WORK_DATE NOT NULL, 
+	AVAILABLE_HRS NUMBER(4,2) DEFAULT 0 CONSTRAINT NN_TAVAIL_AVAILABLE_HRS NOT NULL 
+)
+; 
+
+---
+--- CREATE INDEX: TAVAIL_PK
+---
+CREATE UNIQUE INDEX TAVAIL_PK ON TECHNICIAN_AVAILABILITY
+(
+	WORK_DATE, TECHNICIAN_ID
+)
+;
+
+---
+--- CREATE INDEX: TAVAIL_TECH_FK
+---
+CREATE INDEX TAVAIL_TECH_FK ON TECHNICIAN_AVAILABILITY
+(
+	TECHNICIAN_ID
+)
+;
+
+---
+--- CREATE KEY CONSTRAINT: TAVAIL_PK
+---
+ALTER TABLE TECHNICIAN_AVAILABILITY ADD 
+	CONSTRAINT TAVAIL_PK PRIMARY KEY (WORK_DATE, TECHNICIAN_ID)
+;
+
+---
+--- CREATE KEY CONSTRAINT: TAVAIL_PK
+---
+ALTER TABLE TECHNICIAN_AVAILABILITY ADD 
+	CONSTRAINT TAVAIL_TECH_FK FOREIGN KEY (TECHNICIAN_ID) REFERENCES TECHNICIAN (ID)
+;
+
+---
+--- CREATE TRIGGER: BI_TECHNICIAN
+---
+CREATE OR REPLACE TRIGGER BI_TECHNICIAN
+	BEFORE
+	INSERT ON TECHNICIAN
+	FOR EACH ROW
+BEGIN
+   -- For Toad:  Highlight column ID
+   :new.ID := TECH_SEQ.NEXTVAL;
+END BI_TECHNICIAN;
+/
+
+SHOW ERRORS;
+/
+
+---
+--- CREATE TRIGGER: BI_TECHNICIAN_ASSIGNMENT
+---
+CREATE OR REPLACE TRIGGER BI_TECHNICIAN_ASSIGNMENT
+	BEFORE
+	INSERT ON TECHNICIAN_ASSIGNMENT
+	FOR EACH ROW
+BEGIN
+   -- For Toad:  Highlight column ID
+   :new.ID := TA_SEQ.NEXTVAL;
+END BI_TECHNICIAN_ASSIGNMENT;
+/
+
+SHOW ERRORS;
+/
+
+---
+--- CREATE VIEW: VW_TECHNICIAN_AVAILABILITY
+---
+CREATE OR REPLACE VIEW VW_TECHNICIAN_AVAILABILITY
+(
+   TECH_ID,
+   TECH_NAME,
+   SHOP,
+   AVAILABLE_HRS,
+   WORK_DATE
+)
+AS
+   SELECT tech.id,
+          tech.name,
+          tech.shop_id,
+          techAvail.available_hrs,
+          techAvail.work_date
+     FROM TECHNICIAN tech INNER JOIN TECHNICIAN_AVAILABILITY techAvail
+             ON tech.id = techAvail.technician_id
+;
+
+---
+--- CREATE VIEW: VW_TECHNICIAN_ASSIGN_AVAIL
+---
+CREATE OR REPLACE FORCE VIEW VW_TECHNICIAN_ASSIGN_AVAIL
+(
+   WORK_DATE,
+   SHOP,
+   AVAILABLE_HRS,
+   SCHEDULED_HRS
+)
+AS
+     SELECT tech_utilization.WORK_DATE,
+            tech_utilization.SHOP,
+            SUM (tech_utilization.AVAILABLE_HOURS) AS "AVAILABLE_HRS",
+            SUM (tech_utilization.SCHEDULED_HOURS) AS "SCHEDULED_HRS"
+       FROM (SELECT tech.shop_id AS SHOP,
+                    techAvail.work_date AS WORK_DATE,
+                    techAvail.available_hrs AS AVAILABLE_HOURS,
+                    COALESCE (techAssign.sched_hrs, 0) AS SCHEDULED_HOURS
+               FROM TECHNICIAN tech
+                    INNER JOIN TECHNICIAN_AVAILABILITY techAvail
+                       ON tech.id = techAvail.technician_id
+                    LEFT JOIN (  SELECT SUM (assigned_hrs) AS sched_hrs,
+                                        work_date,
+                                        technician_id
+                                   FROM TECHNICIAN_ASSIGNMENT
+                               GROUP BY work_date, technician_id) techAssign
+                       ON tech.id = techAssign.technician_id
+                          AND TRUNC (techAssign.work_date) =
+                                TRUNC (techAvail.work_date)) tech_utilization
+   GROUP BY tech_utilization.WORK_DATE, tech_utilization.SHOP
+   ORDER BY tech_utilization.WORK_DATE
+;     
+          
+---
+--- CREATE VIEW: VW_TECHNICIAN_UTILIZATION
+---
+CREATE OR REPLACE FORCE VIEW VW_TECHNICIAN_UTILIZATION
+(
+   TECH_NAME,
+   SHOP,
+   AVAILABLE_HRS,
+   WORK_DATE,
+   SCHEDULED_HRS,
+   UTILIZATION_PCT
+)
+AS
+   SELECT tech.name,
+          tech.shop_id,
+          techAvail.available_hrs,
+          techAvail.work_date,
+          CAST (COALESCE (techAssign.sched_hrs, 0) AS NUMBER),
+          CAST (
+             COALESCE (
+                (techAssign.sched_hrs / techAvail.available_hrs) * 100,
+                0) AS NUMBER (5, 2))
+     FROM TECHNICIAN tech
+          INNER JOIN TECHNICIAN_AVAILABILITY techAvail
+             ON tech.id = techAvail.technician_id
+          LEFT JOIN (  SELECT SUM (assigned_hrs) AS sched_hrs,
+                              work_date,
+                              technician_id
+                         FROM TECHNICIAN_ASSIGNMENT
+                     GROUP BY work_date, technician_id) techAssign
+             ON tech.id = techAssign.technician_id
+                AND TRUNC (techAssign.work_date) =
+                      TRUNC (techAvail.work_date)
+;                      

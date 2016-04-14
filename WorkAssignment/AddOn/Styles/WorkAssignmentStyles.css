@@ -1,0 +1,85 @@
+﻿body {
+}
+
+
+.ShopDropDown {
+    width: 200px;
+}
+
+.ShopDropDown .RadComboBox_Mystique {
+    width: 150px !important;
+}
+
+.row-assign-names { height: 100%; width:162px; line-height: 22px;}
+
+.RadToolBar_Mystique.DatePickerButton .rtbItem .rtbWrap { width: 26px;}
+
+
+.RadGrid_Mystique .disabled-row td { color: #999 !important}
+
+.disabled-row .RadButton.RadButton_Mystique.rbImageButton { opacity: .5;}
+
+.TechAssignmentGrid .rgEditRow td {
+    height: 32px !important;
+}
+
+.DatePickerButton.PrevButton .rtbIcon { background: transparent url('<%= WebResource("Plugin_WorkAssignment.Images.CalendarNextPrev.png") %>') 0 0; width:16px !important; margin-top: -3px; }
+.rtbItemHovered .DatePickerButton.PrevButton  .rtbIcon { background: transparent url(' <%=WebResource("Plugin_WorkAssignment.Images.CalendarNextPrev.png") %>') 0 16px; margin-top: -3px; width:16px !important; }
+
+.DatePickerButton.NextButton  .rtbIcon { background: transparent url(' <%= WebResource("Plugin_WorkAssignment.Images.CalendarNextPrev.png") %>') -32px 0; width:16px !important; margin-top: -3px; }
+.rtbItemHovered .DatePickerButton.NextButton  .rtbIcon { background: transparent url('<%=WebResource("Plugin_WorkAssignment.Images.CalendarNextPrev.png") %>') -32px 16px; margin-top: -3px; width:16px !important; }
+
+
+.customLegendWrapper
+{
+     text-align: center;
+     padding-top: 5px;
+}
+.customLegend
+{
+     background-color: #eeeeee;
+     color: #555555;
+     display:inline-block;
+     *display: inline;
+     zoom: 1;
+     padding: 5px;
+     line-height: 22px;
+}
+.customLegend div
+{
+     display: inline-block;
+     *display: inline;
+     zoom: 1;
+     margin: 0px 5px;
+     height: 20px;
+}
+.customLegend div div
+{
+     width: 10px;
+     height: 10px;
+     vertical-align: -1px;
+     .vertical-align: middle;
+}
+.customLegend .available div
+{
+     background-color: #1c69a5;
+}
+.customLegend .under-scheduled div
+{
+     background-color: #069e5b;
+}
+.customLegend .on-target-scheduled div
+{
+     background-color: #cdcdcd;
+}
+.customLegend .over-scheduled div
+{
+     background-color: #c73929;
+}
+
+
+.assign-button  
+{
+    background-color: ButtonFace !important;
+    border-width: 2px !important;
+}

@@ -1,0 +1,827 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Alias="Self" Provider="Oracle.DataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="ACTIVITY" EntityType="Model.Store.ACTIVITY" store:Type="Tables" Schema="STPDEMO2015" />
+          <EntitySet Name="TECHNICIAN" EntityType="Model.Store.TECHNICIAN" store:Type="Tables" Schema="STPDEMO2015" />
+          <EntitySet Name="TECHNICIAN_ASSIGNMENT" EntityType="Model.Store.TECHNICIAN_ASSIGNMENT" store:Type="Tables" Schema="STPDEMO2015" />
+          <EntitySet Name="TECHNICIAN_AVAILABILITY" EntityType="Model.Store.TECHNICIAN_AVAILABILITY" store:Type="Tables" Schema="STPDEMO2015" />
+          <EntitySet Name="VW_TECHNICIAN_ASSIGN_AVAIL" EntityType="Model.Store.VW_TECHNICIAN_ASSIGN_AVAIL" store:Type="Views" store:Schema="STPDEMO2015" store:Name="VW_TECHNICIAN_ASSIGN_AVAIL">
+            <DefiningQuery>SELECT 
+      "VW_TECHNICIAN_ASSIGN_AVAIL"."WORK_DATE" AS "WORK_DATE", 
+      "VW_TECHNICIAN_ASSIGN_AVAIL"."SHOP" AS "SHOP", 
+      "VW_TECHNICIAN_ASSIGN_AVAIL"."AVAILABLE_HRS" AS "AVAILABLE_HRS", 
+      "VW_TECHNICIAN_ASSIGN_AVAIL"."SCHEDULED_HRS" AS "SCHEDULED_HRS"
+      FROM "STPDEMO2015"."VW_TECHNICIAN_ASSIGN_AVAIL" "VW_TECHNICIAN_ASSIGN_AVAIL"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VW_TECHNICIAN_AVAILABILITY" EntityType="Model.Store.VW_TECHNICIAN_AVAILABILITY" store:Type="Views" store:Schema="STPDEMO2015" store:Name="VW_TECHNICIAN_AVAILABILITY">
+            <DefiningQuery>SELECT 
+      "VW_TECHNICIAN_AVAILABILITY"."TECH_ID" AS "TECH_ID", 
+      "VW_TECHNICIAN_AVAILABILITY"."TECH_NAME" AS "TECH_NAME", 
+      "VW_TECHNICIAN_AVAILABILITY"."SHOP" AS "SHOP", 
+      "VW_TECHNICIAN_AVAILABILITY"."AVAILABLE_HRS" AS "AVAILABLE_HRS", 
+      "VW_TECHNICIAN_AVAILABILITY"."WORK_DATE" AS "WORK_DATE"
+      FROM "STPDEMO2015"."VW_TECHNICIAN_AVAILABILITY" "VW_TECHNICIAN_AVAILABILITY"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VW_TECHNICIAN_UTILIZATION" EntityType="Model.Store.VW_TECHNICIAN_UTILIZATION" store:Type="Views" store:Schema="STPDEMO2015" store:Name="VW_TECHNICIAN_UTILIZATION">
+            <DefiningQuery>SELECT 
+      "VW_TECHNICIAN_UTILIZATION"."TECH_NAME" AS "TECH_NAME", 
+      "VW_TECHNICIAN_UTILIZATION"."SHOP" AS "SHOP", 
+      "VW_TECHNICIAN_UTILIZATION"."AVAILABLE_HRS" AS "AVAILABLE_HRS", 
+      "VW_TECHNICIAN_UTILIZATION"."WORK_DATE" AS "WORK_DATE", 
+      "VW_TECHNICIAN_UTILIZATION"."SCHEDULED_HRS" AS "SCHEDULED_HRS", 
+      "VW_TECHNICIAN_UTILIZATION"."UTILIZATION_PCT" AS "UTILIZATION_PCT"
+      FROM "STPDEMO2015"."VW_TECHNICIAN_UTILIZATION" "VW_TECHNICIAN_UTILIZATION"</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="TA_ACT_ACTID_FK" Association="Model.Store.TA_ACT_ACTID_FK">
+            <End Role="ACTIVITY" EntitySet="ACTIVITY" />
+            <End Role="TECHNICIAN_ASSIGNMENT" EntitySet="TECHNICIAN_ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="TAVAIL_TECH_FK" Association="Model.Store.TAVAIL_TECH_FK">
+            <End Role="TECHNICIAN" EntitySet="TECHNICIAN" />
+            <End Role="TECHNICIAN_AVAILABILITY" EntitySet="TECHNICIAN_AVAILABILITY" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ACTIVITY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Nullable="false" />
+          <Property Name="SNAPSHOT_ID" Type="number" Nullable="false" />
+          <Property Name="PROJECT_ID" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="ACT_NUM" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="EXT_ID" Type="varchar2" Nullable="false" MaxLength="35" />
+          <Property Name="EXT_TYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="PROJECT_NAME" Type="varchar2" MaxLength="255" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="255" />
+          <Property Name="WBS" Type="varchar2" MaxLength="50" />
+          <Property Name="PCT_COMP" Type="number" Scale="10" />
+          <Property Name="ACTUAL_DURATION" Type="number" Scale="10" />
+          <Property Name="REMAIN_DURATION" Type="number" Scale="10" />
+          <Property Name="ORIG_DURATION" Type="number" Scale="10" />
+          <Property Name="ORIG_UNITS" Type="number" Scale="10" />
+          <Property Name="REMAIN_UNITS" Type="number" Scale="10" />
+          <Property Name="PLANNED_START" Type="date" />
+          <Property Name="PLANNED_FINISH" Type="date" />
+          <Property Name="START_DATE" Type="date" />
+          <Property Name="FINISH_DATE" Type="date" />
+          <Property Name="ACTUAL_START" Type="date" />
+          <Property Name="ACTUAL_FINISH" Type="date" />
+          <Property Name="REMAIN_EARLY_START" Type="date" />
+          <Property Name="REMAIN_EARLY_FINISH" Type="date" />
+          <Property Name="RESUME_DATE" Type="date" />
+          <Property Name="SUSPEND_DATE" Type="date" />
+          <Property Name="SOURCE_TYPE" Type="varchar2" MaxLength="50" />
+          <Property Name="DEVIATION_CODE" Type="varchar2" MaxLength="50" />
+          <Property Name="DEVIATION_COMMENTS" Type="varchar2" MaxLength="2000" />
+          <Property Name="STATUS_CODE" Type="varchar2" Nullable="false" MaxLength="35" />
+          <Property Name="PRED_STATUS_CODE" Type="varchar2" Nullable="false" MaxLength="35" />
+          <Property Name="TOTAL_FLOAT" Type="number" Scale="10" />
+          <Property Name="FREE_FLOAT" Type="number" Scale="10" />
+          <Property Name="CURRENT_FLOAT" Type="number" Scale="10" />
+          <Property Name="CALENDAR" Type="varchar2" MaxLength="256" />
+          <Property Name="DATA_FOUND_IND" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="CUSTOM_ATTR_STRING_1" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_2" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_3" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_4" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_5" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_6" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_7" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_8" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_9" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_10" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_11" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_12" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_13" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_14" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_15" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_16" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_17" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_18" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_19" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_20" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_21" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_22" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_23" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_24" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_25" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_26" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_27" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_28" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_29" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_30" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_31" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_32" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_33" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_34" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_35" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_36" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_37" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_38" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_39" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_40" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_41" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_42" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_43" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_44" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_45" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_46" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_47" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_48" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_49" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_STRING_50" Type="varchar2" MaxLength="255" />
+          <Property Name="CUSTOM_ATTR_DATE_1" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_2" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_3" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_4" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_5" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_6" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_7" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_8" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_9" Type="date" />
+          <Property Name="CUSTOM_ATTR_DATE_10" Type="date" />
+          <Property Name="CUSTOM_ATTR_INT_1" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_2" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_3" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_4" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_5" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_6" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_7" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_8" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_9" Type="number" />
+          <Property Name="CUSTOM_ATTR_INT_10" Type="number" />
+          <Property Name="CUSTOM_ATTR_NUM_1" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_2" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_3" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_4" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_5" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_6" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_7" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_8" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_9" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_NUM_10" Type="number" Scale="10" />
+          <Property Name="CUSTOM_ATTR_BOOL_1" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_2" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_3" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_4" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_5" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_6" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_7" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_8" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_9" Type="number" Precision="1" />
+          <Property Name="CUSTOM_ATTR_BOOL_10" Type="number" Precision="1" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+          <Property Name="LAST_MODIFIED_BY" Type="varchar2" MaxLength="35" />
+          <Property Name="DELETED_IND" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="PENDING_TX_IND" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="EXT_REMAIN_DURATION" Type="number" Scale="10" />
+          <Property Name="DATA_DATE" Type="date" />
+          <Property Name="SHOP" Type="varchar2" MaxLength="50" />
+          <Property Name="AREA" Type="varchar2" MaxLength="50" />
+          <Property Name="PRIORITY" Type="varchar2" MaxLength="50" />
+          <Property Name="PROBLEM_TYPE" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TECHNICIAN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SHOP_ID" Type="varchar2" Nullable="false" MaxLength="255" />
+          <Property Name="NAME" Type="varchar2" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="TECHNICIAN_ASSIGNMENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ACTIVITY_ID" Type="number" Nullable="false" />
+          <Property Name="TECHNICIAN_ID" Type="number" Nullable="false" />
+          <Property Name="WORK_DATE" Type="date" Nullable="false" />
+          <Property Name="ASSIGNED_HRS" Type="number" Nullable="false" Precision="4" Scale="2" />
+          <Property Name="CREATED_BY" Type="varchar2" Nullable="false" MaxLength="35" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_MODIFIED_BY" Type="varchar2" MaxLength="35" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="TECHNICIAN_AVAILABILITY">
+          <Key>
+            <PropertyRef Name="TECHNICIAN_ID" />
+            <PropertyRef Name="WORK_DATE" />
+          </Key>
+          <Property Name="TECHNICIAN_ID" Type="number" Nullable="false" />
+          <Property Name="WORK_DATE" Type="date" Nullable="false" />
+          <Property Name="AVAILABLE_HRS" Type="number" Nullable="false" Precision="4" Scale="2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'STPDEMO2015.VW_TECHNICIAN_ASSIGN_AVAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="VW_TECHNICIAN_ASSIGN_AVAIL">
+          <Key>
+            <PropertyRef Name="WORK_DATE" />
+            <PropertyRef Name="SHOP" />
+          </Key>
+          <Property Name="WORK_DATE" Type="date" Nullable="false" />
+          <Property Name="SHOP" Type="varchar2" Nullable="false" MaxLength="255" />
+          <Property Name="AVAILABLE_HRS" Type="number" />
+          <Property Name="SCHEDULED_HRS" Type="number" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'STPDEMO2015.VW_TECHNICIAN_AVAILABILITY' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="VW_TECHNICIAN_AVAILABILITY">
+          <Key>
+            <PropertyRef Name="TECH_ID" />
+            <PropertyRef Name="TECH_NAME" />
+            <PropertyRef Name="SHOP" />
+            <PropertyRef Name="AVAILABLE_HRS" />
+            <PropertyRef Name="WORK_DATE" />
+          </Key>
+          <Property Name="TECH_ID" Type="number" Nullable="false" />
+          <Property Name="TECH_NAME" Type="varchar2" Nullable="false" MaxLength="255" />
+          <Property Name="SHOP" Type="varchar2" Nullable="false" MaxLength="255" />
+          <Property Name="AVAILABLE_HRS" Type="number" Nullable="false" Precision="4" Scale="2" />
+          <Property Name="WORK_DATE" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'STPDEMO2015.VW_TECHNICIAN_UTILIZATION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="VW_TECHNICIAN_UTILIZATION">
+          <Key>
+            <PropertyRef Name="TECH_NAME" />
+            <PropertyRef Name="SHOP" />
+            <PropertyRef Name="AVAILABLE_HRS" />
+            <PropertyRef Name="WORK_DATE" />
+          </Key>
+          <Property Name="TECH_NAME" Type="varchar2" Nullable="false" MaxLength="255" />
+          <Property Name="SHOP" Type="varchar2" Nullable="false" MaxLength="255" />
+          <Property Name="AVAILABLE_HRS" Type="number" Nullable="false" Precision="4" Scale="2" />
+          <Property Name="WORK_DATE" Type="date" Nullable="false" />
+          <Property Name="SCHEDULED_HRS" Type="number" />
+          <Property Name="UTILIZATION_PCT" Type="number" Precision="5" Scale="2" />
+        </EntityType>
+        <Association Name="TA_ACT_ACTID_FK">
+          <End Role="ACTIVITY" Type="Model.Store.ACTIVITY" Multiplicity="1" />
+          <End Role="TECHNICIAN_ASSIGNMENT" Type="Model.Store.TECHNICIAN_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTIVITY">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TECHNICIAN_ASSIGNMENT">
+              <PropertyRef Name="ACTIVITY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TAVAIL_TECH_FK">
+          <End Role="TECHNICIAN" Type="Model.Store.TECHNICIAN" Multiplicity="1" />
+          <End Role="TECHNICIAN_AVAILABILITY" Type="Model.Store.TECHNICIAN_AVAILABILITY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TECHNICIAN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TECHNICIAN_AVAILABILITY">
+              <PropertyRef Name="TECHNICIAN_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="WorkAssignEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TECHNICIANs" EntityType="Model.TECHNICIAN" />
+          <EntitySet Name="TECHNICIAN_ASSIGNMENT" EntityType="Model.TECHNICIAN_ASSIGNMENT" />
+          <EntitySet Name="TECHNICIAN_AVAILABILITY" EntityType="Model.TECHNICIAN_AVAILABILITY" />
+          <AssociationSet Name="TA_TECH_TECHID_FK" Association="Model.TA_TECH_TECHID_FK">
+            <End Role="TECHNICIAN" EntitySet="TECHNICIANs" />
+            <End Role="TECHNICIAN_ASSIGNMENT" EntitySet="TECHNICIAN_ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="TAVAIL_TECH_FK" Association="Model.TAVAIL_TECH_FK">
+            <End Role="TECHNICIAN" EntitySet="TECHNICIANs" />
+            <End Role="TECHNICIAN_AVAILABILITY" EntitySet="TECHNICIAN_AVAILABILITY" />
+          </AssociationSet>
+          <EntitySet Name="VW_TECHNICIAN_AVAILABILITY" EntityType="Model.VW_TECHNICIAN_AVAILABILITY" />
+          <EntitySet Name="VW_TECHNICIAN_UTILIZATION" EntityType="Model.VW_TECHNICIAN_UTILIZATION" />
+          <EntitySet Name="VW_TECHNICIAN_ASSIGN_AVAIL" EntityType="Model.VW_TECHNICIAN_ASSIGN_AVAIL" />
+          <EntitySet Name="ACTIVITies" EntityType="Model.ACTIVITY" />
+          <AssociationSet Name="TA_ACT_ACTID_FK" Association="Model.TA_ACT_ACTID_FK">
+            <End Role="ACTIVITY" EntitySet="ACTIVITies" />
+            <End Role="TECHNICIAN_ASSIGNMENT" EntitySet="TECHNICIAN_ASSIGNMENT" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TECHNICIAN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="SHOP_ID" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NAME" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TECHNICIAN_ASSIGNMENT" Relationship="Model.TA_TECH_TECHID_FK" FromRole="TECHNICIAN" ToRole="TECHNICIAN_ASSIGNMENT" />
+          <NavigationProperty Name="TECHNICIAN_AVAILABILITY" Relationship="Model.TAVAIL_TECH_FK" FromRole="TECHNICIAN" ToRole="TECHNICIAN_AVAILABILITY" />
+        </EntityType>
+        <EntityType Name="TECHNICIAN_ASSIGNMENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ACTIVITY_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="TECHNICIAN_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="WORK_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="ASSIGNED_HRS" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="String" Name="CREATED_BY" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATED_DATE" Nullable="false" />
+          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <NavigationProperty Name="TECHNICIAN" Relationship="Model.TA_TECH_TECHID_FK" FromRole="TECHNICIAN_ASSIGNMENT" ToRole="TECHNICIAN" />
+          <NavigationProperty Name="ACTIVITY" Relationship="Model.TA_ACT_ACTID_FK" FromRole="TECHNICIAN_ASSIGNMENT" ToRole="ACTIVITY" />
+        </EntityType>
+        <EntityType Name="TECHNICIAN_AVAILABILITY">
+          <Key>
+            <PropertyRef Name="TECHNICIAN_ID" />
+            <PropertyRef Name="WORK_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="TECHNICIAN_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="WORK_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="AVAILABLE_HRS" Nullable="false" Precision="4" Scale="2" />
+          <NavigationProperty Name="TECHNICIAN" Relationship="Model.TAVAIL_TECH_FK" FromRole="TECHNICIAN_AVAILABILITY" ToRole="TECHNICIAN" />
+        </EntityType>
+        <Association Name="TA_TECH_TECHID_FK">
+          <End Type="Model.TECHNICIAN" Role="TECHNICIAN" Multiplicity="1" />
+          <End Type="Model.TECHNICIAN_ASSIGNMENT" Role="TECHNICIAN_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TECHNICIAN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TECHNICIAN_ASSIGNMENT">
+              <PropertyRef Name="TECHNICIAN_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TAVAIL_TECH_FK">
+          <End Type="Model.TECHNICIAN" Role="TECHNICIAN" Multiplicity="1" />
+          <End Type="Model.TECHNICIAN_AVAILABILITY" Role="TECHNICIAN_AVAILABILITY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TECHNICIAN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TECHNICIAN_AVAILABILITY">
+              <PropertyRef Name="TECHNICIAN_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="VW_TECHNICIAN_AVAILABILITY">
+          <Key>
+            <PropertyRef Name="TECH_ID" />
+            <PropertyRef Name="TECH_NAME" />
+            <PropertyRef Name="SHOP" />
+            <PropertyRef Name="AVAILABLE_HRS" />
+            <PropertyRef Name="WORK_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="TECH_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="TECH_NAME" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SHOP" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="AVAILABLE_HRS" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="DateTime" Name="WORK_DATE" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VW_TECHNICIAN_UTILIZATION">
+          <Key>
+            <PropertyRef Name="TECH_NAME" />
+            <PropertyRef Name="SHOP" />
+            <PropertyRef Name="AVAILABLE_HRS" />
+            <PropertyRef Name="WORK_DATE" />
+          </Key>
+          <Property Type="String" Name="TECH_NAME" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SHOP" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="AVAILABLE_HRS" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="DateTime" Name="WORK_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="SCHEDULED_HRS" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="UTILIZATION_PCT" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="VW_TECHNICIAN_ASSIGN_AVAIL">
+          <Key>
+            <PropertyRef Name="WORK_DATE" />
+            <PropertyRef Name="SHOP" />
+          </Key>
+          <Property Type="DateTime" Name="WORK_DATE" Nullable="false" />
+          <Property Type="String" Name="SHOP" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="AVAILABLE_HRS" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SCHEDULED_HRS" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="ACTIVITY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SNAPSHOT_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="PROJECT_ID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ACT_NUM" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXT_ID" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXT_TYPE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_NAME" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WBS" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PCT_COMP" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="ACTUAL_DURATION" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="REMAIN_DURATION" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="ORIG_DURATION" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="ORIG_UNITS" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="REMAIN_UNITS" Precision="38" Scale="10" />
+          <Property Type="DateTime" Name="PLANNED_START" />
+          <Property Type="DateTime" Name="PLANNED_FINISH" />
+          <Property Type="DateTime" Name="START_DATE" />
+          <Property Type="DateTime" Name="FINISH_DATE" />
+          <Property Type="DateTime" Name="ACTUAL_START" />
+          <Property Type="DateTime" Name="ACTUAL_FINISH" />
+          <Property Type="DateTime" Name="REMAIN_EARLY_START" />
+          <Property Type="DateTime" Name="REMAIN_EARLY_FINISH" />
+          <Property Type="DateTime" Name="RESUME_DATE" />
+          <Property Type="DateTime" Name="SUSPEND_DATE" />
+          <Property Type="String" Name="SOURCE_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DEVIATION_CODE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DEVIATION_COMMENTS" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATUS_CODE" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRED_STATUS_CODE" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="TOTAL_FLOAT" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="FREE_FLOAT" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CURRENT_FLOAT" Precision="38" Scale="10" />
+          <Property Type="String" Name="CALENDAR" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DATA_FOUND_IND" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_1" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_2" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_3" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_4" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_5" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_6" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_7" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_8" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_9" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_10" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_11" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_12" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_13" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_14" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_15" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_16" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_17" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_18" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_19" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_20" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_21" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_22" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_23" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_24" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_25" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_26" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_27" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_28" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_29" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_30" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_31" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_32" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_33" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_34" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_35" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_36" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_37" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_38" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_39" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_40" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_41" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_42" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_43" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_44" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_45" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_46" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_47" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_48" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_49" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUSTOM_ATTR_STRING_50" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_1" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_2" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_3" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_4" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_5" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_6" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_7" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_8" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_9" />
+          <Property Type="DateTime" Name="CUSTOM_ATTR_DATE_10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_1" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_2" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_3" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_4" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_5" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_6" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_7" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_8" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_9" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_INT_10" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_1" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_2" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_3" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_4" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_5" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_6" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_7" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_8" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_9" Precision="38" Scale="10" />
+          <Property Type="Decimal" Name="CUSTOM_ATTR_NUM_10" Precision="38" Scale="10" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_1" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_2" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_3" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_4" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_5" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_6" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_7" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_8" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_9" />
+          <Property Type="Boolean" Name="CUSTOM_ATTR_BOOL_10" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DELETED_IND" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PENDING_TX_IND" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="EXT_REMAIN_DURATION" Precision="38" Scale="10" />
+          <Property Type="DateTime" Name="DATA_DATE" />
+          <Property Type="String" Name="SHOP" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="AREA" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRIORITY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROBLEM_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TECHNICIAN_ASSIGNMENT" Relationship="Model.TA_ACT_ACTID_FK" FromRole="ACTIVITY" ToRole="TECHNICIAN_ASSIGNMENT" />
+        </EntityType>
+        <Association Name="TA_ACT_ACTID_FK">
+          <End Type="Model.ACTIVITY" Role="ACTIVITY" Multiplicity="1" />
+          <End Type="Model.TECHNICIAN_ASSIGNMENT" Role="TECHNICIAN_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTIVITY">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TECHNICIAN_ASSIGNMENT">
+              <PropertyRef Name="ACTIVITY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="WorkAssignEntities">
+          <EntitySetMapping Name="TECHNICIANs">
+            <EntityTypeMapping TypeName="Model.TECHNICIAN">
+              <MappingFragment StoreEntitySet="TECHNICIAN">
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="SHOP_ID" ColumnName="SHOP_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TECHNICIAN_ASSIGNMENT">
+            <EntityTypeMapping TypeName="Model.TECHNICIAN_ASSIGNMENT">
+              <MappingFragment StoreEntitySet="TECHNICIAN_ASSIGNMENT">
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ASSIGNED_HRS" ColumnName="ASSIGNED_HRS" />
+                <ScalarProperty Name="WORK_DATE" ColumnName="WORK_DATE" />
+                <ScalarProperty Name="TECHNICIAN_ID" ColumnName="TECHNICIAN_ID" />
+                <ScalarProperty Name="ACTIVITY_ID" ColumnName="ACTIVITY_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TECHNICIAN_AVAILABILITY">
+            <EntityTypeMapping TypeName="Model.TECHNICIAN_AVAILABILITY">
+              <MappingFragment StoreEntitySet="TECHNICIAN_AVAILABILITY">
+                <ScalarProperty Name="AVAILABLE_HRS" ColumnName="AVAILABLE_HRS" />
+                <ScalarProperty Name="WORK_DATE" ColumnName="WORK_DATE" />
+                <ScalarProperty Name="TECHNICIAN_ID" ColumnName="TECHNICIAN_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VW_TECHNICIAN_AVAILABILITY">
+            <EntityTypeMapping TypeName="Model.VW_TECHNICIAN_AVAILABILITY">
+              <MappingFragment StoreEntitySet="VW_TECHNICIAN_AVAILABILITY">
+                <ScalarProperty Name="WORK_DATE" ColumnName="WORK_DATE" />
+                <ScalarProperty Name="AVAILABLE_HRS" ColumnName="AVAILABLE_HRS" />
+                <ScalarProperty Name="SHOP" ColumnName="SHOP" />
+                <ScalarProperty Name="TECH_NAME" ColumnName="TECH_NAME" />
+                <ScalarProperty Name="TECH_ID" ColumnName="TECH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VW_TECHNICIAN_UTILIZATION">
+            <EntityTypeMapping TypeName="Model.VW_TECHNICIAN_UTILIZATION">
+              <MappingFragment StoreEntitySet="VW_TECHNICIAN_UTILIZATION">
+                <ScalarProperty Name="UTILIZATION_PCT" ColumnName="UTILIZATION_PCT" />
+                <ScalarProperty Name="SCHEDULED_HRS" ColumnName="SCHEDULED_HRS" />
+                <ScalarProperty Name="WORK_DATE" ColumnName="WORK_DATE" />
+                <ScalarProperty Name="AVAILABLE_HRS" ColumnName="AVAILABLE_HRS" />
+                <ScalarProperty Name="SHOP" ColumnName="SHOP" />
+                <ScalarProperty Name="TECH_NAME" ColumnName="TECH_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VW_TECHNICIAN_ASSIGN_AVAIL">
+            <EntityTypeMapping TypeName="Model.VW_TECHNICIAN_ASSIGN_AVAIL">
+              <MappingFragment StoreEntitySet="VW_TECHNICIAN_ASSIGN_AVAIL">
+                <ScalarProperty Name="SCHEDULED_HRS" ColumnName="SCHEDULED_HRS" />
+                <ScalarProperty Name="AVAILABLE_HRS" ColumnName="AVAILABLE_HRS" />
+                <ScalarProperty Name="SHOP" ColumnName="SHOP" />
+                <ScalarProperty Name="WORK_DATE" ColumnName="WORK_DATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ACTIVITies">
+            <EntityTypeMapping TypeName="Model.ACTIVITY">
+              <MappingFragment StoreEntitySet="ACTIVITY">
+                <ScalarProperty Name="PROBLEM_TYPE" ColumnName="PROBLEM_TYPE" />
+                <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+                <ScalarProperty Name="AREA" ColumnName="AREA" />
+                <ScalarProperty Name="SHOP" ColumnName="SHOP" />
+                <ScalarProperty Name="DATA_DATE" ColumnName="DATA_DATE" />
+                <ScalarProperty Name="EXT_REMAIN_DURATION" ColumnName="EXT_REMAIN_DURATION" />
+                <ScalarProperty Name="PENDING_TX_IND" ColumnName="PENDING_TX_IND" />
+                <ScalarProperty Name="DELETED_IND" ColumnName="DELETED_IND" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_10" ColumnName="CUSTOM_ATTR_BOOL_10" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_9" ColumnName="CUSTOM_ATTR_BOOL_9" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_8" ColumnName="CUSTOM_ATTR_BOOL_8" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_7" ColumnName="CUSTOM_ATTR_BOOL_7" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_6" ColumnName="CUSTOM_ATTR_BOOL_6" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_5" ColumnName="CUSTOM_ATTR_BOOL_5" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_4" ColumnName="CUSTOM_ATTR_BOOL_4" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_3" ColumnName="CUSTOM_ATTR_BOOL_3" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_2" ColumnName="CUSTOM_ATTR_BOOL_2" />
+                <ScalarProperty Name="CUSTOM_ATTR_BOOL_1" ColumnName="CUSTOM_ATTR_BOOL_1" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_10" ColumnName="CUSTOM_ATTR_NUM_10" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_9" ColumnName="CUSTOM_ATTR_NUM_9" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_8" ColumnName="CUSTOM_ATTR_NUM_8" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_7" ColumnName="CUSTOM_ATTR_NUM_7" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_6" ColumnName="CUSTOM_ATTR_NUM_6" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_5" ColumnName="CUSTOM_ATTR_NUM_5" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_4" ColumnName="CUSTOM_ATTR_NUM_4" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_3" ColumnName="CUSTOM_ATTR_NUM_3" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_2" ColumnName="CUSTOM_ATTR_NUM_2" />
+                <ScalarProperty Name="CUSTOM_ATTR_NUM_1" ColumnName="CUSTOM_ATTR_NUM_1" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_10" ColumnName="CUSTOM_ATTR_INT_10" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_9" ColumnName="CUSTOM_ATTR_INT_9" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_8" ColumnName="CUSTOM_ATTR_INT_8" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_7" ColumnName="CUSTOM_ATTR_INT_7" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_6" ColumnName="CUSTOM_ATTR_INT_6" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_5" ColumnName="CUSTOM_ATTR_INT_5" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_4" ColumnName="CUSTOM_ATTR_INT_4" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_3" ColumnName="CUSTOM_ATTR_INT_3" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_2" ColumnName="CUSTOM_ATTR_INT_2" />
+                <ScalarProperty Name="CUSTOM_ATTR_INT_1" ColumnName="CUSTOM_ATTR_INT_1" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_10" ColumnName="CUSTOM_ATTR_DATE_10" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_9" ColumnName="CUSTOM_ATTR_DATE_9" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_8" ColumnName="CUSTOM_ATTR_DATE_8" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_7" ColumnName="CUSTOM_ATTR_DATE_7" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_6" ColumnName="CUSTOM_ATTR_DATE_6" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_5" ColumnName="CUSTOM_ATTR_DATE_5" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_4" ColumnName="CUSTOM_ATTR_DATE_4" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_3" ColumnName="CUSTOM_ATTR_DATE_3" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_2" ColumnName="CUSTOM_ATTR_DATE_2" />
+                <ScalarProperty Name="CUSTOM_ATTR_DATE_1" ColumnName="CUSTOM_ATTR_DATE_1" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_50" ColumnName="CUSTOM_ATTR_STRING_50" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_49" ColumnName="CUSTOM_ATTR_STRING_49" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_48" ColumnName="CUSTOM_ATTR_STRING_48" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_47" ColumnName="CUSTOM_ATTR_STRING_47" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_46" ColumnName="CUSTOM_ATTR_STRING_46" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_45" ColumnName="CUSTOM_ATTR_STRING_45" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_44" ColumnName="CUSTOM_ATTR_STRING_44" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_43" ColumnName="CUSTOM_ATTR_STRING_43" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_42" ColumnName="CUSTOM_ATTR_STRING_42" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_41" ColumnName="CUSTOM_ATTR_STRING_41" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_40" ColumnName="CUSTOM_ATTR_STRING_40" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_39" ColumnName="CUSTOM_ATTR_STRING_39" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_38" ColumnName="CUSTOM_ATTR_STRING_38" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_37" ColumnName="CUSTOM_ATTR_STRING_37" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_36" ColumnName="CUSTOM_ATTR_STRING_36" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_35" ColumnName="CUSTOM_ATTR_STRING_35" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_34" ColumnName="CUSTOM_ATTR_STRING_34" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_33" ColumnName="CUSTOM_ATTR_STRING_33" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_32" ColumnName="CUSTOM_ATTR_STRING_32" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_31" ColumnName="CUSTOM_ATTR_STRING_31" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_30" ColumnName="CUSTOM_ATTR_STRING_30" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_29" ColumnName="CUSTOM_ATTR_STRING_29" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_28" ColumnName="CUSTOM_ATTR_STRING_28" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_27" ColumnName="CUSTOM_ATTR_STRING_27" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_26" ColumnName="CUSTOM_ATTR_STRING_26" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_25" ColumnName="CUSTOM_ATTR_STRING_25" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_24" ColumnName="CUSTOM_ATTR_STRING_24" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_23" ColumnName="CUSTOM_ATTR_STRING_23" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_22" ColumnName="CUSTOM_ATTR_STRING_22" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_21" ColumnName="CUSTOM_ATTR_STRING_21" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_20" ColumnName="CUSTOM_ATTR_STRING_20" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_19" ColumnName="CUSTOM_ATTR_STRING_19" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_18" ColumnName="CUSTOM_ATTR_STRING_18" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_17" ColumnName="CUSTOM_ATTR_STRING_17" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_16" ColumnName="CUSTOM_ATTR_STRING_16" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_15" ColumnName="CUSTOM_ATTR_STRING_15" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_14" ColumnName="CUSTOM_ATTR_STRING_14" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_13" ColumnName="CUSTOM_ATTR_STRING_13" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_12" ColumnName="CUSTOM_ATTR_STRING_12" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_11" ColumnName="CUSTOM_ATTR_STRING_11" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_10" ColumnName="CUSTOM_ATTR_STRING_10" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_9" ColumnName="CUSTOM_ATTR_STRING_9" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_8" ColumnName="CUSTOM_ATTR_STRING_8" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_7" ColumnName="CUSTOM_ATTR_STRING_7" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_6" ColumnName="CUSTOM_ATTR_STRING_6" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_5" ColumnName="CUSTOM_ATTR_STRING_5" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_4" ColumnName="CUSTOM_ATTR_STRING_4" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_3" ColumnName="CUSTOM_ATTR_STRING_3" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_2" ColumnName="CUSTOM_ATTR_STRING_2" />
+                <ScalarProperty Name="CUSTOM_ATTR_STRING_1" ColumnName="CUSTOM_ATTR_STRING_1" />
+                <ScalarProperty Name="DATA_FOUND_IND" ColumnName="DATA_FOUND_IND" />
+                <ScalarProperty Name="CALENDAR" ColumnName="CALENDAR" />
+                <ScalarProperty Name="CURRENT_FLOAT" ColumnName="CURRENT_FLOAT" />
+                <ScalarProperty Name="FREE_FLOAT" ColumnName="FREE_FLOAT" />
+                <ScalarProperty Name="TOTAL_FLOAT" ColumnName="TOTAL_FLOAT" />
+                <ScalarProperty Name="PRED_STATUS_CODE" ColumnName="PRED_STATUS_CODE" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="DEVIATION_COMMENTS" ColumnName="DEVIATION_COMMENTS" />
+                <ScalarProperty Name="DEVIATION_CODE" ColumnName="DEVIATION_CODE" />
+                <ScalarProperty Name="SOURCE_TYPE" ColumnName="SOURCE_TYPE" />
+                <ScalarProperty Name="SUSPEND_DATE" ColumnName="SUSPEND_DATE" />
+                <ScalarProperty Name="RESUME_DATE" ColumnName="RESUME_DATE" />
+                <ScalarProperty Name="REMAIN_EARLY_FINISH" ColumnName="REMAIN_EARLY_FINISH" />
+                <ScalarProperty Name="REMAIN_EARLY_START" ColumnName="REMAIN_EARLY_START" />
+                <ScalarProperty Name="ACTUAL_FINISH" ColumnName="ACTUAL_FINISH" />
+                <ScalarProperty Name="ACTUAL_START" ColumnName="ACTUAL_START" />
+                <ScalarProperty Name="FINISH_DATE" ColumnName="FINISH_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="PLANNED_FINISH" ColumnName="PLANNED_FINISH" />
+                <ScalarProperty Name="PLANNED_START" ColumnName="PLANNED_START" />
+                <ScalarProperty Name="REMAIN_UNITS" ColumnName="REMAIN_UNITS" />
+                <ScalarProperty Name="ORIG_UNITS" ColumnName="ORIG_UNITS" />
+                <ScalarProperty Name="ORIG_DURATION" ColumnName="ORIG_DURATION" />
+                <ScalarProperty Name="REMAIN_DURATION" ColumnName="REMAIN_DURATION" />
+                <ScalarProperty Name="ACTUAL_DURATION" ColumnName="ACTUAL_DURATION" />
+                <ScalarProperty Name="PCT_COMP" ColumnName="PCT_COMP" />
+                <ScalarProperty Name="WBS" ColumnName="WBS" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="EXT_TYPE" ColumnName="EXT_TYPE" />
+                <ScalarProperty Name="EXT_ID" ColumnName="EXT_ID" />
+                <ScalarProperty Name="ACT_NUM" ColumnName="ACT_NUM" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="SNAPSHOT_ID" ColumnName="SNAPSHOT_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="CopyToOutputDirectory" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="WorkAssignments">
+        <EntityTypeShape EntityType="Model.TECHNICIAN" Width="1.5" PointX="0.75" PointY="3" Height="1.9802864583333335" />
+        <EntityTypeShape EntityType="Model.TECHNICIAN_ASSIGNMENT" Width="1.5" PointX="3" PointY="2.375" Height="3.1340950520833317" />
+        <EntityTypeShape EntityType="Model.TECHNICIAN_AVAILABILITY" Width="1.5" PointX="3" PointY="6.875" Height="1.7879850260416683" />
+        <AssociationConnector Association="Model.TA_TECH_TECHID_FK" >
+          <ConnectorPoint PointX="2.25" PointY="3.9901432291666667" />
+          <ConnectorPoint PointX="3" PointY="3.9901432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model.TAVAIL_TECH_FK" >
+          <ConnectorPoint PointX="1.5" PointY="4.9802864583333335" />
+          <ConnectorPoint PointX="1.5" PointY="7.7689925130208337" />
+          <ConnectorPoint PointX="3" PointY="7.7689925130208337" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Model.VW_TECHNICIAN_AVAILABILITY" Width="1.5" PointX="5.375" PointY="0.75" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="Model.VW_TECHNICIAN_UTILIZATION" Width="1.5" PointX="5.375" PointY="3.75" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="Model.VW_TECHNICIAN_ASSIGN_AVAIL" Width="1.5" PointX="7.375" PointY="0.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="Model.ACTIVITY" Width="1.5" PointX="5.375" PointY="8.125" Height="27.171774088541678" />
+        <AssociationConnector Association="Model.TA_ACT_ACTID_FK" >
+          <ConnectorPoint PointX="5.3761528461538459" PointY="8.125" />
+          <ConnectorPoint PointX="5" PointY="7.7488471538461541" />
+          <ConnectorPoint PointX="5" PointY="3.9420475260416663" />
+          <ConnectorPoint PointX="4.5" PointY="3.9420475260416663" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

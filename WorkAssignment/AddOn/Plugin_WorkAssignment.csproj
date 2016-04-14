@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{69602E40-F271-44B1-B5AD-BA2854B27C8C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Plugin_WorkAssignment</RootNamespace>
+    <AssemblyName>Plugin_WorkAssignment</AssemblyName>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Demo|AnyCPU'">
+    <OutputPath>bin\Demo\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\20150313-2015_1_8_WorkAssignment\WebApp\Unity.Extensions\bin\Debug\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\20150313-2015_1_8_WorkAssignment\WebApp\CommonLibs\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins">
+      <HintPath>..\..\20150313-2015_1_8_WorkAssignment\WebApp\CommonLibs\Telerik.Web.UI.Skins.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Grid\Templates\DayFromDateColumnTemplate.cs" />
+    <Compile Include="Controls\Grid\Templates\EditStartDateTemplate.cs" />
+    <Compile Include="Controls\Grid\Templates\OTReqColumnTemplate.cs" />
+    <Compile Include="Controls\Grid\Templates\PredStatusWorkAssignmentColumnTemplate.cs" />
+    <Compile Include="Controls\Grid\Templates\TechAssignmentColumnTemplate.cs" />
+    <Compile Include="ModelAPI\ACTIVITY.cs">
+      <DependentUpon>WorkAssignments.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\IACTIVITYRepository.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\IObjectContext.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\IRepository.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\ITECHNICIANRepository.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\ITECHNICIAN_ASSIGNMENTRepository.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\ITECHNICIAN_AVAILABILITYRepository.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\IUnitOfWork.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\IVW_TECHNICIAN_ASSIGN_AVAILRepository.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\IVW_TECHNICIAN_AVAILABILITYRepository.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\IVW_TECHNICIAN_UTILIZATIONRepository.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\UtilizationChartData.cs" />
+    <Compile Include="ModelAPI\TECHNICIAN.cs">
+      <DependentUpon>WorkAssignments.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\TECHNICIAN_ASSIGNMENT.cs">
+      <DependentUpon>WorkAssignments.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\TECHNICIAN_AVAILABILITY.cs">
+      <DependentUpon>WorkAssignments.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\VW_TECHNICIAN_ASSIGN_AVAIL.cs">
+      <DependentUpon>WorkAssignments.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\VW_TECHNICIAN_AVAILABILITY.cs">
+      <DependentUpon>WorkAssignments.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\VW_TECHNICIAN_UTILIZATION.cs">
+      <DependentUpon>WorkAssignments.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAPI\WorkAssignments.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkAssignments.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ACTIVITYRepository.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DBObjectContext.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EFRepository.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EFUnitOfWork.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RepositoryIQueryableExtensions.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TECHNICIANRepository.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TECHNICIAN_ASSIGNMENTRepository.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TECHNICIAN_AVAILABILITYRepository.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VW_TECHNICIAN_ASSIGN_AVAILRepository.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VW_TECHNICIAN_AVAILABILITYRepository.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VW_TECHNICIAN_UTILIZATIONRepository.cs">
+      <DependentUpon>EFRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\WorkAssignments.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkAssignments.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\WorkAssignments.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkAssignments.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TechUtilizationChartControl.ascx.cs">
+      <DependentUpon>TechUtilizationChartControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\TechUtilizationChartControl.ascx.designer.cs">
+      <DependentUpon>TechUtilizationChartControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TechUtilizationGridControl.ascx.cs">
+      <DependentUpon>TechUtilizationGridControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\TechUtilizationGridControl.ascx.designer.cs">
+      <DependentUpon>TechUtilizationGridControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Toolbar\Templates\ToolbarDatePickerTemplate.cs" />
+    <Compile Include="Controls\WorkOrderGridControl.ascx.cs">
+      <DependentUpon>WorkOrderGridControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\WorkOrderGridControl.ascx.designer.cs">
+      <DependentUpon>WorkOrderGridControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\Dialog\Presenter\ITechAssignmentDialogPresenter.cs" />
+    <Compile Include="View\Dialog\Presenter\TechAssignmentDialogPresenter.cs" />
+    <Compile Include="ServicesAPI\IWorkAssignService.cs" />
+    <Compile Include="Services\WorkAssignService.cs" />
+    <Compile Include="View\Dialog\TechAssignmentDialog.aspx.cs">
+      <DependentUpon>TechAssignmentDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Dialog\TechAssignmentDialog.aspx.designer.cs">
+      <DependentUpon>TechAssignmentDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dialog\ViewAbstraction\ITechAssignmentDialog.cs" />
+    <Compile Include="View\Presenter\IWorkAssignmentPresenter.cs" />
+    <Compile Include="View\Presenter\IWorkOrderGridControlPresenter.cs" />
+    <Compile Include="View\Presenter\ITechUtilizationChartControlPresenter.cs" />
+    <Compile Include="View\Presenter\ITechUtilizationGridControlPresenter.cs" />
+    <Compile Include="View\Presenter\TechUtilizationChartControlPresenter.cs" />
+    <Compile Include="View\Presenter\TechUtilizationGridControlPresenter.cs" />
+    <Compile Include="View\Presenter\WorkAssignmentPresenter.cs" />
+    <Compile Include="View\Presenter\WorkOrderGridControlPresenter.cs" />
+    <Compile Include="View\ViewAbstraction\ITechUtilizationChartControl.cs" />
+    <Compile Include="View\ViewAbstraction\ITechUtilizationGridControl.cs" />
+    <Compile Include="View\ViewAbstraction\IWorkAssignment.cs" />
+    <Compile Include="View\ViewAbstraction\IWorkOrderGridControl.cs" />
+    <Compile Include="View\WorkAssignment.aspx.cs">
+      <DependentUpon>WorkAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\WorkAssignment.aspx.designer.cs">
+      <DependentUpon>WorkAssignment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WorkAssignmentPlugin.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\WorkAssignment.aspx" />
+    <EmbeddedResource Include="Controls\TechUtilizationChartControl.ascx" />
+    <EmbeddedResource Include="Controls\TechUtilizationGridControl.ascx" />
+    <EmbeddedResource Include="Controls\WorkOrderGridControl.ascx" />
+    <EmbeddedResource Include="Styles\WorkAssignmentStyles.css" />
+    <EmbeddedResource Include="View\Dialog\TechAssignmentDialog.aspx" />
+    <EmbeddedResource Include="Images\CalendarNextPrev.png" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PluginAPI\PluginAPI.csproj">
+      <Project>{69e1818b-d62e-498a-b3c9-95276ead3151}</Project>
+      <Name>PluginAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WorkAssignment_2015_1_8\WebApp\DataModelAPI\DataModelAPI.csproj">
+      <Project>{69445346-5CC3-48BC-963B-888A4B501DF8}</Project>
+      <Name>DataModelAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WorkAssignment_2015_1_8\WebApp\Logging\Logging.csproj">
+      <Project>{47271EF1-063B-4A20-AD09-9C0EAC546CCA}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WorkAssignment_2015_1_8\WebApp\ServicesAPI\ServicesAPI.csproj">
+      <Project>{4D15A734-F6CC-4FB0-B6D1-4D8CF158728B}</Project>
+      <Name>ServicesAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WorkAssignment_2015_1_8\WebApp\Syntempo.Web\Syntempo.Web.csproj">
+      <Project>{BF8F8007-6010-47FC-AC4D-FD2480F55E4F}</Project>
+      <Name>Syntempo.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WorkAssignment_2015_1_8\WebApp\Unity.Extensions\Unity.Extensions.csproj">
+      <Project>{593E0C6E-2953-46F6-A5A6-B0532777CA17}</Project>
+      <Name>Unity.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WorkAssignment_2015_1_8\WebApp\Utilities\Utilities.csproj">
+      <Project>{969CCE6F-FE80-447F-BEDD-C2E5B70EC684}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WorkAssignment_2015_1_8\WebApp\WebControls\WebControls.csproj">
+      <Project>{FC2E8432-9251-46BD-8284-828DC2B89957}</Project>
+      <Name>WebControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WorkAssignment_2015_1_8\WebApp\WebServicesAPI\WebServicesAPI.csproj">
+      <Project>{436E1AAC-358B-49C4-9C49-C74E63A3F5C8}</Project>
+      <Name>WebServicesAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Model\WorkAssignments.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WorkAssignments.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ModelAPI\IRepository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IRepository.cs</LastGenOutput>
+    </None>
+    <None Include="ModelAPI\WorkAssignments.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WorkAssignments.cs</LastGenOutput>
+    </None>
+    <None Include="Model\EFRepository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EFRepository.cs</LastGenOutput>
+    </None>
+    <None Include="Model\WorkAssignments.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WorkAssignments.Context.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49573</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <UserProperties UseAjaxifiedTemplates="True" UseJQuerySupport="True" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetDir)$(ProjectName).dll" "C:\Syntempo\Plugins\$(ProjectName).dll"
+iisreset
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -command "(get-content 'Model\WorkAssignments.ssdl') -replace 'FROM ""STPDEV3""..','FROM ' | set-content 'Model\WorkAssignments.ssdl'"
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -command "(get-content 'Model\WorkAssignments.ssdl') -replace 'STPDEV3','' | set-content 'Model\WorkAssignments.ssdl'"
+
+mkdir "$(SolutionDir)Syntempo.Web\bin\WorkAssign"
+copy /Y "Model\*.ssdl" "$(SolutionDir)Syntempo.Web\bin\WorkAssign"
+copy /Y "Model\*.msl" "$(SolutionDir)Syntempo.Web\bin\WorkAssign"
+copy /Y "Model\*.csdl" "$(SolutionDir)Syntempo.Web\bin\WorkAssign"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>
